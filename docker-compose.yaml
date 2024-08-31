@@ -1,0 +1,13 @@
+services:
+  postgresql:
+    image: bitnami/postgresql:15.0.0
+    container_name: ram_db
+    environment:
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWD}
+      POSTGRES_DB: ramdb
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"

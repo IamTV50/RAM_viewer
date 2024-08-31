@@ -4,6 +4,8 @@ const express = require('express');
 const indexRouter = require('./routes/index');
 const ramRouter = require('./routes/ram');
 
+const initDatabase = require("./db/init");
+
 const app = express();
 
 // view engine setup
@@ -11,6 +13,9 @@ app.set('view engine', 'hbs'); //could comment out/remove but it will produce wa
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//fill db with mock data
+initDatabase();
 
 // define routes
 app.use('/', indexRouter);
