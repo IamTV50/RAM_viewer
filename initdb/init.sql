@@ -21,7 +21,7 @@ CREATE TABLE ram_modules(
     capacity int not null,
     speed int not null,
     model varchar(30) not null,
-    type_id UUID references types (id),
-    brand_id UUID references brands (id),
-    configuration_id UUID references configurations (id)
+    type_id UUID references types (id) ON DELETE CASCADE NOT NULL,
+    brand_id UUID references brands (id) ON DELETE CASCADE NOT NULL,
+    configuration_id UUID references configurations (id) ON DELETE CASCADE NOT NULL
 );

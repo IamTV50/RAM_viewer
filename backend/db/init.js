@@ -2,40 +2,43 @@ const db = require('./db');
 
 const types = ['DDR5','DDR4','DDR3','DDR2','DDR']
 const brands = ['Corsair', 'G.Skill', 'Kingston', 'TeamGroup', 'Patriot', 'Crucial']
-const configurations = ['1x4', '2x4', '4x4', '1x8', '2x8', '4x8', '1x16', '2x16', '4x16', '2x32', '4x32', '2x64', '4x64', '1x32', '8x64'];
+const configurations = ['1x1','2x1', '2x2', '1x2', '1x4', '2x4', '4x4', '1x8', '2x8', '4x8', '1x16', '2x16', '4x16', '2x32', '4x32', '2x64', '4x64', '1x32', '8x64'];
 
 const typeIds = new Map();
 const brandIds  = new Map();
 const configIds = new Map();
 
-function initDatabase() {
+async function initDatabase() {
     try {
         //drop everything before :)
-        db.query('DELETE FROM types;');
-        db.query('DELETE FROM brands;');
-        db.query('DELETE FROM configurations;');
-        db.query('DELETE FROM ram_modules;');
+        await db.query('DELETE FROM ram_modules;');
+        await db.query('DELETE FROM types;');
+        await db.query('DELETE FROM brands;');
+        await db.query('DELETE FROM configurations;');
 
-        //insert types
-        types.forEach(async (ramType) =>{
+        // Insert types
+        const typePromises = types.map(async (ramType) => {
             const result = await db.query('INSERT INTO types (type) VALUES ($1) RETURNING id', [ramType]);
             typeIds.set(ramType, result.rows[0].id);
         });
 
-        //insert brands
-        brands.forEach(async (ramBrand) =>{
+        // Insert brands
+        const brandPromises = brands.map(async (ramBrand) => {
             const result = await db.query('INSERT INTO brands (name) VALUES ($1) RETURNING id', [ramBrand]);
             brandIds.set(ramBrand, result.rows[0].id);
         });
 
-        //insert ram configs
-        configurations.forEach(async (ramConf) =>{
+        // Insert configurations
+        const configPromises = configurations.map(async (ramConf) => {
             const result = await db.query('INSERT INTO configurations (conf) VALUES ($1) RETURNING id', [ramConf]);
             configIds.set(ramConf, result.rows[0].id);
         });
 
+        // Wait for all types, brands, and configurations to be inserted
+        await Promise.all([...typePromises, ...brandPromises, ...configPromises]);
+
         //insert ram modules
-        const ramModules =[
+        const ramModules = [
             {
                 "brand_id": brandIds.get("Corsair"),
                 "model":"Vengeance DDR5",
@@ -334,22 +337,26 @@ function initDatabase() {
                 "type_id": typeIds.get("DDR")
             }
         ]
-        ramModules.forEach(async (mode) => {
+        const ramModulePromises = ramModules.map(async (module) => {
             await db.query(
-                'INSERT INTO ram_modules (price, ecc, cas_latency, capacity, model, speed, type_id, brand_id, configuration_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
+                `INSERT INTO ram_modules (price, ecc, cas_latency, capacity, model, speed, type_id, brand_id, configuration_id)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
                 [
-                    mode.price,
-                    mode.ECC,
-                    mode.CAS_latency,
-                    mode.capacity,
-                    mode.model,
-                    mode.speed_in_MHz,
-                    mode.type_id,
-                    mode.brand_id,
-                    mode.configuration_id
+                    module.price,
+                    module.ECC,
+                    module.CAS_latency,
+                    module.capacity,
+                    module.model,
+                    module.speed_in_MHz,
+                    module.type_id,
+                    module.brand_id,
+                    module.configuration_id
                 ]
             );
         });
+
+        // Wait for all ram modules to be inserted
+        await Promise.all([...ramModulePromises]);
     }
     catch (err) {
         console.error('Error initializing database', err);
