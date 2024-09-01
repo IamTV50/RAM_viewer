@@ -59,4 +59,37 @@ module.exports = {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+    updateModule: async function(req, res){
+        const moduleToUpdate = req.params.id;
+        let newPrice = req.body.newPrice;
+        let newEcc = req.body.newEcc;
+        let newCas = req.body.newCas;
+        let newCapacity = req.body.newCapacity;
+        let newSpeed = req.body.newSpeed;
+        let newModel = req.body.newModel;
+        let newTypeId = req.body.newTypeId;
+        let newBrandId = req.body.newBrandId;
+        let newConfId = req.body.newConfId;
+
+        try{
+            await db.query(`UPDATE ram_modules
+                SET price = $1,
+                ecc = $2,
+                cas_latency = $3,
+                capacity = $4,
+                speed = $5,
+                model = $6,
+                type_id = $7,
+                brand_id = $8,
+                configuration_id = $9
+                WHERE id = $10;`,
+                [newPrice,newEcc,newCas,newCapacity,newSpeed,newModel,newTypeId,newBrandId,newConfId, moduleToUpdate]);
+
+            res.status(200).json({updated: 'ok'});
+        }
+        catch (err) {
+            console.error('Error fetching configurations', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 };
