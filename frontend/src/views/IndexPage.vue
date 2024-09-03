@@ -42,6 +42,13 @@ const handleSubmit = async (module) => {
 
     const { data, loading, loadingError } = await useFetch(`http://localhost:3000/ram/update/${module.id}`, options);
 };
+const areInputsValid = (module) => {
+    return (module.price === null ||
+        module.cas_latency === null ||
+        module.capacity === null ||
+        module.model === '' || module.model === null ||
+        module.speed === null);
+};
 
 onMounted( async () => {
     const { data, loading, loadingError } = await useFetch('http://localhost:3000/ram/modules');
@@ -72,7 +79,7 @@ onMounted( async () => {
                                 <div class="col">
                                     Price:
                                     <InputNumber v-model="module.price"
-                                                 input-id="locale-user"
+                                                 input-id="priceInput"
                                                  :min-fraction-digits="2"
                                                  :max-fraction-digits="2"
                                                  :invalid="module.price === null" />
@@ -132,7 +139,9 @@ onMounted( async () => {
                         </form>
 
                         <div class="text-end">
-                            <Button label="Submit" @click="handleSubmit(module)" />
+                            <Button label="Submit"
+                                    @click="handleSubmit(module)"
+                                    :disabled="areInputsValid(module)" />
                         </div>
                     </AccordionContent>
                 </AccordionPanel>
