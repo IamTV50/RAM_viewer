@@ -67,8 +67,8 @@ module.exports = {
         let newCapacity = req.body.newCapacity;
         let newSpeed = req.body.newSpeed;
         let newModel = req.body.newModel;
-        let newBrandId = req.body.newBrandId;
-        let newConfId = req.body.newConfId;
+        let newBrand = req.body.newBrand;
+        let newConf = req.body.newConf;
 
         try{
             await db.query(`UPDATE ram_modules
@@ -78,10 +78,10 @@ module.exports = {
                 capacity = $4,
                 speed = $5,
                 model = $6,
-                brand_id = $7,
-                configuration_id = $8
+                brand_id = (SELECT id FROM brands WHERE name = $7),
+                configuration_id = (SELECT id FROM configurations WHERE conf = $8)
                 WHERE id = $9;`,
-                [newPrice,newEcc,newCas,newCapacity,newSpeed,newModel,newBrandId,newConfId,moduleToUpdate]);
+                [newPrice,newEcc,newCas,newCapacity,newSpeed,newModel,newBrand,newConf,moduleToUpdate]);
 
             res.status(200).json({updated: 'ok'});
         }
