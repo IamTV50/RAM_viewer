@@ -67,7 +67,6 @@ module.exports = {
         let newCapacity = req.body.newCapacity;
         let newSpeed = req.body.newSpeed;
         let newModel = req.body.newModel;
-        let newTypeId = req.body.newTypeId;
         let newBrandId = req.body.newBrandId;
         let newConfId = req.body.newConfId;
 
@@ -79,11 +78,10 @@ module.exports = {
                 capacity = $4,
                 speed = $5,
                 model = $6,
-                type_id = $7,
-                brand_id = $8,
-                configuration_id = $9
-                WHERE id = $10;`,
-                [newPrice,newEcc,newCas,newCapacity,newSpeed,newModel,newTypeId,newBrandId,newConfId, moduleToUpdate]);
+                brand_id = $7,
+                configuration_id = $8
+                WHERE id = $9;`,
+                [newPrice,newEcc,newCas,newCapacity,newSpeed,newModel,newBrandId,newConfId,moduleToUpdate]);
 
             res.status(200).json({updated: 'ok'});
         }
