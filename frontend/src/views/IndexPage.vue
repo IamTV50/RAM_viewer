@@ -14,7 +14,6 @@ import {useFetch} from "@/utils/useFetch.js";
 import BrandsDropdown from "@/components/BrandsDropdown.vue";
 import RamConfigurationsDropdown from "@/components/RamConfigurationsDropdown.vue";
 
-//const types = ref([]);
 const brands = ref([]);
 const ramConfigs = ref([]);
 const ramModules = ref([]);
@@ -76,8 +75,8 @@ onMounted( async () => {
                     <AccordionContent>
                         <form>
                             <div class="row mb-2">
-                                <div class="col">
-                                    Price:
+                                <div class="col col-2"> Price: </div>
+                                <div class="col col-auto">
                                     <InputNumber v-model="module.price"
                                                  input-id="priceInput"
                                                  :min-fraction-digits="2"
@@ -86,52 +85,53 @@ onMounted( async () => {
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    ECC memory: <Checkbox v-model="module.ecc" :binary="true" />
+                                <div class="col col-2">ECC memory:</div>
+                                <div class="col col-auto">
+                                     <Checkbox v-model="module.ecc" :binary="true" />
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    CAS latency:
+                                <div class="col col-2">CAS latency:</div>
+                                <div class="col col-auto">
                                     <InputNumber v-model="module.cas_latency"
                                                  :max-fraction-digits="0"
                                                  :invalid="module.cas_latency === null"/>
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    Capacity:
+                                <div class="col col-2">Capacity:</div>
+                                <div class="col col-auto">
                                     <InputNumber v-model="module.capacity"
                                                  :max-fraction-digits="0"
                                                  :invalid="module.capacity === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    Configuration:
+                                <div class="col col-2">Configuration:</div>
+                                <div class="col col-auto">
                                     <RamConfigurationsDropdown v-model:config-list="ramConfigs"
                                                                v-model:selected-config="module.configuration" />
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    Model:
+                                <div class="col col-2">Model:</div>
+                                <div class="col col-auto">
                                     <InputText type="text"
                                                v-model="module.model"
                                                :invalid="module.model === '' || module.model === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    Speed:
+                                <div class="col col-2">Speed:</div>
+                                <div class="col col-auto">
                                     <InputNumber v-model="module.speed"
                                                  :max-fraction-digits="0"
                                                  :invalid="module.speed === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col">
-                                    Brand:
+                                <div class="col col-2">Brand:</div>
+                                <div class="col col-auto">
                                     <BrandsDropdown v-model:brands-list="brands"
                                                     v-model:selected-brand="module.brand_name" />
                                 </div>
