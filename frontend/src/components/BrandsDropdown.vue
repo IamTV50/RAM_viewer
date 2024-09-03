@@ -15,9 +15,9 @@ onMounted(async () => {
 </script>
 
 <template>
+    <!-- filter brands so it only contain conf string (instead of e.g {name: "Kingston"}) -->
     <Select v-model="selectedBrand"
-            :options="brands"
-            optionLabel="name"
+            :options="brands.map(item => item.name)"
             :placeholder="selectedBrand"
             :invalid="selectedBrand === null" />
 </template>
