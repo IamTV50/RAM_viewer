@@ -51,7 +51,7 @@ module.exports = {
     },
     getConfigs: async function(req, res){
         try{
-            const dbRes = await db.query(`SELECT * FROM configurations`);
+            const dbRes = await db.query(`SELECT conf FROM configurations`);
             res.status(200).json(dbRes.rows);
         }
         catch (err) {
