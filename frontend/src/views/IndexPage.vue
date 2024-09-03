@@ -71,9 +71,13 @@ onMounted( async () => {
                 <AccordionPanel v-for="module in ramModules"
                                 :key="module.id"
                                 :value="module.id" >
-                    <AccordionHeader>{{ module.ram_type }} - {{ module.model }}</AccordionHeader>
+                    <AccordionHeader>{{ module.model }}</AccordionHeader>
                     <AccordionContent>
                         <form>
+                            <div class="row mb-2">
+                                <div class="col col-2"> Type: </div>
+                                <div class="col col-auto">{{ module.ram_type }}</div>
+                            </div>
                             <div class="row mb-2">
                                 <div class="col col-2"> Price: </div>
                                 <div class="col col-auto">
