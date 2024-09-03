@@ -1,6 +1,8 @@
 <script setup>
 import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
 import ProgressSpinner from "primevue/progressspinner";
 import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
@@ -37,69 +39,72 @@ onMounted( async () => {
         </div>
         <div v-else>
             <Accordion>
-                <AccordionTab v-for="module in ramModules"
-                              :key="module.id"
-                              :header="module.model">
-                    <form>
-                        <div class="row mb-2">
-                            <div class="col">
-                                Price:
-                                <InputNumber v-model="module.price"
-                                             input-id="locale-user"
-                                             :min-fraction-digits="2"
-                                             :max-fraction-digits="2"/>
+                <AccordionPanel v-for="module in ramModules"
+                                :key="module.id"
+                                :value="module.id" >
+                    <AccordionHeader>{{ module.ram_type }} - {{ module.model }}</AccordionHeader>
+                    <AccordionContent>
+                        <form>
+                            <div class="row mb-2">
+                                <div class="col">
+                                    Price:
+                                    <InputNumber v-model="module.price"
+                                                 input-id="locale-user"
+                                                 :min-fraction-digits="2"
+                                                 :max-fraction-digits="2"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                ECC memory: <Checkbox v-model="module.ecc" :binary="true" />
+                            <div class="row mb-2">
+                                <div class="col">
+                                    ECC memory: <Checkbox v-model="module.ecc" :binary="true" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                CAS latency:
-                                <InputNumber v-model="module.cas_latency"
-                                             input-id="integeronly" />
+                            <div class="row mb-2">
+                                <div class="col">
+                                    CAS latency:
+                                    <InputNumber v-model="module.cas_latency"
+                                                 input-id="integeronly" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                Capacity:
-                                <InputNumber v-model="module.capacity"
-                                             input-id="integeronly" />
+                            <div class="row mb-2">
+                                <div class="col">
+                                    Capacity:
+                                    <InputNumber v-model="module.capacity"
+                                                 input-id="integeronly" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                Configuration:
-                                <!-- todo -->
+                            <div class="row mb-2">
+                                <div class="col">
+                                    Configuration:
+                                    <!-- todo -->
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                Model:
-                                <InputText type="text" v-model="module.model" />
+                            <div class="row mb-2">
+                                <div class="col">
+                                    Model:
+                                    <InputText type="text" v-model="module.model" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                Speed:
-                                <InputNumber v-model="module.speed"
-                                             input-id="integeronly" />
+                            <div class="row mb-2">
+                                <div class="col">
+                                    Speed:
+                                    <InputNumber v-model="module.speed"
+                                                 input-id="integeronly" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col">
-                                Brand:
-                                <!-- todo -->
+                            <div class="row mb-2">
+                                <div class="col">
+                                    Brand:
+                                    <!-- todo -->
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
 
-                    <div class="text-end">
-                        <Button label="Submit" />
-                    </div>
-                </AccordionTab>
+                        <div class="text-end">
+                            <Button label="Submit" />
+                        </div>
+                    </AccordionContent>
+                </AccordionPanel>
             </Accordion>
         </div>
     </div>
