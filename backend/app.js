@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const ramRouter = require('./routes/ram');
@@ -7,6 +8,12 @@ const ramRouter = require('./routes/ram');
 const initDatabase = require("./db/init");
 
 const app = express();
+
+//cors setup
+let allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+app.use(cors({
+  origin: allowedOrigins,
+}));
 
 // view engine setup
 app.set('view engine', 'hbs'); //could comment out/remove but it will produce warnings
