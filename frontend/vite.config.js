@@ -12,5 +12,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    host: '0.0.0.0',  // Ensure the server is accessible externally
+    port: 5173        // The port the Vite dev server will run on
   }
 })

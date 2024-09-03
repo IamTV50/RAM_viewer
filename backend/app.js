@@ -10,7 +10,7 @@ const initDatabase = require("./db/init");
 const app = express();
 
 //cors setup
-let allowedOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+let allowedOrigins = ['http://localhost:3000', 'http://localhost:5173', 'http://ram_db:3000'];
 app.use(cors({
   origin: allowedOrigins,
 }));

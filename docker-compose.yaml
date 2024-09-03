@@ -5,9 +5,49 @@ services:
     environment:
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_PASSWORD: ${PG_PASSWD}
-      POSTGRES_DB: ramdb
+      POSTGRES_DB: ${PG_DB_NAME}
     volumes:
       - ./db_data:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+    networks:
+      - ram-view-net
+
+  frontend:
+    container_name: frontend
+    image: node:slim
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+    expose:
+      - "5173"
+    networks:
+      - ram-view-net
+
+  backend:
+    container_name: backend
+    image: node:slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    command: sh -c "npm install && npm start"
+    environment:
+      PG_HOST: ${PG_HOST}
+      PG_USERNAME: ${PG_USERNAME}
+      PG_PASSWD: ${PG_PASSWD}
+      PG_DB_NAME: ${PG_DB_NAME}
+      PG_PORT: ${PG_PORT}
+    ports:
+      - "3000:3000"
+    networks:
+      - ram-view-net
+    depends_on:
+      - postgresql
+
+networks:
+  ram-view-net:
+    driver: bridge
