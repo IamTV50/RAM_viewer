@@ -8,6 +8,7 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 
 import {onMounted, ref} from "vue";
+import {useFetch} from "@/utils/useFetch.js";
 
 const types = ref([]);
 const brands = ref([]);
@@ -17,41 +18,22 @@ const ramModules = ref([]);
 const loadingRamModules = ref(true);
 const loadingRamModulesError = ref(false);
 
-const fetchModules = async () =>{
-    const url = 'http://localhost:3000/ram/modules';
-    loadingRamModules.value = true;
+onMounted( async () => {
+    const { data, loading, loadingError } = await useFetch('http://localhost:3000/ram/modules');
 
-    try{
-        const res = await fetch(url);
-
-        if(!res.ok){
-            throw new Error('Failed to fetch');
-        }
-
-        ramModules.value = await res.json();
-        loadingRamModulesError.value = false;
-    }
-    catch (error) {
-        loadingRamModulesError.value = true;
-        console.error(error.message);
-    }
-    finally {
-        loadingRamModules.value = false;
-    }
-}
-
-onMounted(() => {
-    fetchModules();
+    ramModules.value = data.value;
+    loadingRamModules.value = loading.value;
+    loadingRamModulesError.value = loadingError.value;
 });
 </script>
 
 <template>
     <div class="mt-4">
-        <div v-if="loadingRamModules">
+        <div v-if="loadingRamModules" class="text-center">
             <ProgressSpinner />
         </div>
-        <div v-else-if="loadingRamModulesError">
-            <span>couldn't load all data</span>
+        <div v-else-if="loadingRamModulesError" class="text-center">
+            <span>problem loading data</span>
         </div>
         <div v-else>
             <Accordion>
