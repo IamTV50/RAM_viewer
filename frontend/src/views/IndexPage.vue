@@ -13,6 +13,7 @@ import {onMounted, ref} from "vue";
 import {useFetch} from "@/utils/useFetch.js";
 import BrandsDropdown from "@/components/BrandsDropdown.vue";
 import RamConfigurationsDropdown from "@/components/RamConfigurationsDropdown.vue";
+import {store} from "@/store.js";
 
 const brands = ref([]);
 const ramConfigs = ref([]);
@@ -50,7 +51,7 @@ const areInputsValid = (module) => {
 };
 
 onMounted( async () => {
-    const { data, loading, loadingError } = await useFetch('http://localhost:3000/ram/modules');
+    const { data, loading, loadingError } = await useFetch(`${store.apiHost}:${store.apiPort}/ram/modules`);
 
     ramModules.value = data.value;
     loadingRamModules.value = loading.value;

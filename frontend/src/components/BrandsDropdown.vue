@@ -3,12 +3,13 @@ import Select from 'primevue/select';
 
 import {onMounted} from "vue";
 import {useFetch} from "@/utils/useFetch.js";
+import {store} from "@/store.js";
 
 const brands = defineModel('brandsList');
 const selectedBrand = defineModel('selectedBrand');
 
 onMounted(async () => {
-    const { data, loading, loadingError } = await useFetch('http://localhost:3000/ram/brands');
+    const { data, loading, loadingError } = await useFetch(`${store.apiHost}:${store.apiPort}/ram/brands`);
 
     brands.value = data.value;
 });

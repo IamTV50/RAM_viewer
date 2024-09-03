@@ -3,12 +3,13 @@ import Select from 'primevue/select';
 
 import {onMounted} from "vue";
 import {useFetch} from "@/utils/useFetch.js";
+import {store} from "@/store.js";
 
 const configs = defineModel('configList');
 const selectedConfig = defineModel('selectedConfig');
 
 onMounted(async () => {
-    const { data, loading, loadingError } = await useFetch('http://localhost:3000/ram/configs');
+    const { data, loading, loadingError } = await useFetch(`${store.apiHost}:${store.apiPort}/ram/configs`);
 
     configs.value = data.value;
 });
