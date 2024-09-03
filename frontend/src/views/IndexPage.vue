@@ -22,8 +22,25 @@ const ramModules = ref([]);
 const loadingRamModules = ref(true);
 const loadingRamModulesError = ref(false);
 
-const handleSubmit = () => {
-    console.log('submit clicked');
+const handleSubmit = async (module) => {
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "newPrice": module.price,
+            "newEcc": module.ecc,
+            "newCas": module.cas_latency,
+            "newCapacity": module.capacity,
+            "newSpeed": module.speed,
+            "newModel": module.model,
+            "newBrand": module.brand_name,
+            "newConf": module.configuration
+        })
+    };
+
+    const { data, loading, loadingError } = await useFetch(`http://localhost:3000/ram/update/${module.id}`, options);
 };
 
 onMounted( async () => {
@@ -57,7 +74,8 @@ onMounted( async () => {
                                     <InputNumber v-model="module.price"
                                                  input-id="locale-user"
                                                  :min-fraction-digits="2"
-                                                 :max-fraction-digits="2"/>
+                                                 :max-fraction-digits="2"
+                                                 :invalid="module.price === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -69,14 +87,16 @@ onMounted( async () => {
                                 <div class="col">
                                     CAS latency:
                                     <InputNumber v-model="module.cas_latency"
-                                                 input-id="integeronly" />
+                                                 :max-fraction-digits="0"
+                                                 :invalid="module.cas_latency === null"/>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col">
                                     Capacity:
                                     <InputNumber v-model="module.capacity"
-                                                 input-id="integeronly" />
+                                                 :max-fraction-digits="0"
+                                                 :invalid="module.capacity === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -89,14 +109,17 @@ onMounted( async () => {
                             <div class="row mb-2">
                                 <div class="col">
                                     Model:
-                                    <InputText type="text" v-model="module.model" />
+                                    <InputText type="text"
+                                               v-model="module.model"
+                                               :invalid="module.model === '' || module.model === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col">
                                     Speed:
                                     <InputNumber v-model="module.speed"
-                                                 input-id="integeronly" />
+                                                 :max-fraction-digits="0"
+                                                 :invalid="module.speed === null" />
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -109,7 +132,7 @@ onMounted( async () => {
                         </form>
 
                         <div class="text-end">
-                            <Button label="Submit" @click="handleSubmit" />
+                            <Button label="Submit" @click="handleSubmit(module)" />
                         </div>
                     </AccordionContent>
                 </AccordionPanel>
