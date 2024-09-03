@@ -31,7 +31,7 @@ module.exports = {
     },
     getBrands: async function(req, res){
         try{
-            const dbRes = await db.query(`SELECT * FROM brands`);
+            const dbRes = await db.query(`SELECT name FROM brands`);
             res.status(200).json(dbRes.rows);
         }
         catch (err) {
