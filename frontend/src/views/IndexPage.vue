@@ -11,14 +11,20 @@ import InputText from 'primevue/inputtext';
 
 import {onMounted, ref} from "vue";
 import {useFetch} from "@/utils/useFetch.js";
+import BrandsDropdown from "@/components/BrandsDropdown.vue";
+import RamConfigurationsDropdown from "@/components/RamConfigurationsDropdown.vue";
 
-const types = ref([]);
+//const types = ref([]);
 const brands = ref([]);
-const ramConfs = ref([]);
+const ramConfigs = ref([]);
 const ramModules = ref([]);
 
 const loadingRamModules = ref(true);
 const loadingRamModulesError = ref(false);
+
+const handleSubmit = () => {
+    console.log('submit clicked');
+};
 
 onMounted( async () => {
     const { data, loading, loadingError } = await useFetch('http://localhost:3000/ram/modules');
@@ -76,7 +82,8 @@ onMounted( async () => {
                             <div class="row mb-2">
                                 <div class="col">
                                     Configuration:
-                                    <!-- todo -->
+                                    <RamConfigurationsDropdown v-model:config-list="ramConfigs"
+                                                               v-model:selected-config="module.configuration" />
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -95,18 +102,18 @@ onMounted( async () => {
                             <div class="row mb-2">
                                 <div class="col">
                                     Brand:
-                                    <!-- todo -->
+                                    <BrandsDropdown v-model:brands-list="brands"
+                                                    v-model:selected-brand="module.brand_name" />
                                 </div>
                             </div>
                         </form>
 
                         <div class="text-end">
-                            <Button label="Submit" />
+                            <Button label="Submit" @click="handleSubmit" />
                         </div>
                     </AccordionContent>
                 </AccordionPanel>
             </Accordion>
         </div>
     </div>
-
 </template>
