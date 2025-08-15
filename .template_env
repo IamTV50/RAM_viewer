@@ -1,5 +1,5 @@
 PG_USERNAME="your_username"
 PG_PASSWD="f4kePassword"
-PG_HOST="localhost"
+PG_HOST="ram_db"
 PG_PORT=5432
-PG_DB_NAME="dbName"
+PG_DB_NAME="ramdb"
